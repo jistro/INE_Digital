@@ -1,0 +1,289 @@
+/* Estilo Material Design */
+.container {
+  padding: 0 1px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #5c5c5c;
+  color: #fff;
+  padding: .4rem 0;
+}
+
+.main {
+  min-height: calc(100vh - 64px);
+  flex: 1;
+
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.container__twoSideByside {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container__data,
+.container__leftSide,
+.container__rightSide {
+  flex: 1;
+  max-width: auto;
+  margin: 5px;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container__data:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.container__leftSide h2,
+.container__rightSide h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333333;
+  margin: 5px 0;
+  padding: 1px;
+  display: flex;
+  justify-content: center;
+}
+
+.container__leftSide p,
+.container__rightSide p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  margin: 3px 0;
+  padding: 1px;
+  display: flex;
+}
+
+
+.container__leftSide input,
+.container__rightSide input,
+.container__leftSide select,
+.container__rightSide select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333333;
+  background-color: #ffffff;
+  transition: border-color 0.3s ease;
+}
+
+
+.container__leftSide input:focus,
+.container__rightSide input:focus {
+  border-color: #f6ffc9;
+}
+
+
+
+.button__confirmAction {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0d76fc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button__confirmAction:hover {
+  background-color: #0956c1;
+}
+
+.closeButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #961010;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton:hover {
+  background-color: #ca0c0c;
+}
+
+.okButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #499106;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.okButton:hover {
+  background-color: #3bc21a;
+}
+
+.success{
+  border: 1px solid #3cc21a;
+  background-color: #3cc21a1a;
+  width: 100%;
+  flex: 1;
+  max-width: auto;
+  margin: 5px;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.success:hover{
+  background-color: #3cc21a34;
+}
+
+.successText {
+  font-size: 30px; /* Ajusta el tamaño de fuente según tus preferencias */
+  font-weight: bold;
+  color: green; /* Cambia el color a tu elección */
+  margin: 10px 0; /* Ajusta el margen según tu diseño */
+}
+
+.addressText,
+.txHash {
+  font-family: monospace; /* Usar una fuente monoespaciada para mantener el ancho constante */
+  font-size: 14px; /* Ajusta el tamaño de fuente según tus preferencias */
+  word-wrap: break-word; /* Rompe las palabras largas para ajustar al ancho del contenedor */
+  word-break: break-all; /* Rompe palabras largas en cualquier punto para ajustar al ancho del contenedor */
+  margin-top: 5px; /* Ajusta el margen superior según tu diseño */
+}
+
+
+/* Responsive Styles for Mobile */
+@media (max-width: 800px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  /* Main */
+  .container__treeButtons {
+    flex-direction: column;
+  }
+  .button_toSecretariaAduanas,
+  .button__toCasaAduanal,
+  .button__toPublicData {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+  }
+
+  /* Employee Data Section */
+  .containerHEADER__logo {
+    height: 30px;
+  }
+
+
+  .header {
+    padding: 0 2%;
+    height: 48px;
+  }
+  .header h1 {
+    font-size: 1rem;
+  }
+  .header img {
+    height: 20px;
+  }
+  .containerHEADER__button {
+    display: none;
+    padding: 0 1%;
+  }
+  .container__twoSideByside {
+    flex-direction: column;
+    padding: 0 1rem; 
+  }
+  .container__data,
+  .container__leftSide,
+  .container__rightSide {
+    margin: 10px 0; 
+    padding: 1rem;
+  }
+  .container__leftSide h2,
+  .container__rightSide h2 {
+    font-size: 1.2rem;
+  }
+
+  .container__leftSide input,
+  .container__rightSide input,
+  .container__leftSide select,
+  .container__rightSide select {
+    padding: 5px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+  }
+
+
+
+  .button__confirmAction {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+  .description {
+    font-size: 1rem;
+  }
+  .card {
+    width: 100%;
+  }
+
+  
+  /* Footer */
+  /*todo el texto justificado a la izquierda*/
+  .footerSection {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .logoSection {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .logoSection img {
+    height: 80px;
+    width: auto;
+  }
+  /*todo el texto justificado a la izquierda*/
+  .explanatoryText,
+  .helpSection{
+    padding: 0 10px;
+    font-size: 0.8rem;
+    text-align: left;
+  }
+}

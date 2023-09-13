@@ -1534,8 +1534,8 @@
       }
     },
     "src/CredencialDigital.sol": {
-      "lastModificationDate": 1694383044950,
-      "contentHash": "7dab454a5d1c319f427c8d212323f491",
+      "lastModificationDate": 1694569011854,
+      "contentHash": "0bb451d0e259a40ab195e0e02362cac0",
       "sourceName": "src/CredencialDigital.sol",
       "solcConfig": {
         "settings": {

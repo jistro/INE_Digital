@@ -15,7 +15,7 @@
 .main {
   min-height: calc(100vh - 64px);
   flex: 1;
-
+  background-color: #f5f5f5;
 }
 
 .footer {
@@ -41,7 +41,8 @@
 
 .container__data,
 .container__leftSide,
-.container__rightSide {
+.container__rightSide,
+.container__info {
   flex: 1;
   max-width: auto;
   margin: 5px;
@@ -56,7 +57,8 @@
 }
 
 .container__leftSide h2,
-.container__rightSide h2 {
+.container__rightSide h2,
+.container__info h2 {
   font-size: 24px;
   font-weight: 600;
   color: #333333;
@@ -96,6 +98,30 @@
 .container__leftSide input:focus,
 .container__rightSide input:focus {
   border-color: #f6ffc9;
+}
+
+
+
+.container__info p {
+  font-size: 18px;
+  font-weight: 400;
+  color: #333333;
+  margin: 3px 0;
+  padding: 1px;
+  display: flex;
+}
+.container__info strong{
+  font-size: 20px;
+  font-weight: 600;
+  color: #333333;
+  margin: 3px 0;
+  padding: 1px;
+  display: flex;
+}
+
+.container__info ul {
+  padding: 0 4%;
+  margin: 0;
 }
 
 
@@ -181,6 +207,99 @@
 }
 
 
+/* Main */
+.container__treeButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button_toPanel,
+.button__toMyData,
+.button__toGetData {
+  padding: 10px 20px;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.button_toPanel {
+  background-color: #3000cf;
+}
+
+.button_toPanel:hover {
+  background-color: #0d00a1;
+}
+
+.button__toMyData {
+  background-color: #0d76fc;
+}
+
+.button__toMyData:hover {
+  background-color: #0956c1;
+}
+
+.button__toGetData {
+  background-color: #05a00f;
+}
+
+.button__toGetData:hover {
+  background-color: #0d760d;
+}
+
+
+/* Estilo para la tarjeta de identidad */
+.container__card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card_identidad {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 500px; /* Ajusta el ancho según tus necesidades */
+  margin: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+/* Estilo para los párrafos */
+.card_identidad p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* Estilo para la dirección */
+.card_identidad .direccion {
+  margin-top: 15px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+/* estilo cuando no hay identidad */
+.card_noData {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 500px; /* Ajusta el ancho según tus necesidades */
+  margin: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: #f09d9d;
+}
+
+.card_noData p {
+  font-size: 25px;
+  color: #fff;
+}
+
+
+
+
 /* Responsive Styles for Mobile */
 @media (max-width: 800px) {
   .grid {
@@ -192,9 +311,19 @@
   .container__treeButtons {
     flex-direction: column;
   }
-  .button_toSecretariaAduanas,
-  .button__toCasaAduanal,
-  .button__toPublicData {
+  .button_toPanel,
+  .button__toMyData,
+  .button__toGetData {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+  }
+  /*/*/
+  .container__treeButtons {
+    flex-direction: column;
+  }
+  .button_toPanel,
+  .button__toMyData,
+  .button__toGetData {
     padding: 10px 20px;
     font-size: 0.8rem;
   }

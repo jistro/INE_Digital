@@ -43,6 +43,7 @@ contract CredencialDigital is ERC721, AccessControl {
 
     mapping(uint256 idCredencial => DatosCredencial datosCredencial) public ciudadano;
     mapping(string claveElector => uint256 idCredencial) public credencialPorClaveElector;
+    mapping(address ciudadano => uint256 idCredencial) public credencialPorDireccion;
 
 
     constructor(address addressBroker, address addressINE) ERC721("CredencialDigital", "INE") {
@@ -64,6 +65,9 @@ contract CredencialDigital is ERC721, AccessControl {
         if(credencialPorClaveElector[claveElector] != 0){
             revert CredencialDigital__CredecialYaExiste();
         }
+        if (credencialPorDireccion[to] != 0){
+            revert CredencialDigital__CredecialYaExiste();
+        }
         uint256 tokenId = _tokenIdCounter.current() + 1;
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
@@ -78,6 +82,7 @@ contract CredencialDigital is ERC721, AccessControl {
             fechaVigencia,
             Direccion("", 0, "", "", 0, 0)
         );
+        credencialPorDireccion[to] = tokenId;
         return tokenId;
     }
 
@@ -98,6 +103,11 @@ contract CredencialDigital is ERC721, AccessControl {
 
     function getData(uint256 tokenId) public view onlyRole(DATA_PROVIDER_ROLE) returns (DatosCredencial memory) {
         return ciudadano[tokenId];
+    }
+
+    function getIDwithSender() public view returns (DatosCredencial memory) {
+        uint256 id = credencialPorDireccion[msg.sender];
+        return ciudadano[id];
     }
 
     // The following functions are overrides required by Solidity.

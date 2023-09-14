@@ -10,6 +10,7 @@ contract DeploySystemTest is Script {
 
 
     address adminAddress = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+    address employeeAddress = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
     string rfc = "JUPE-123456";
     string nombre = "Juan Perez";
     string telefono = "1234567890";
@@ -18,9 +19,14 @@ contract DeploySystemTest is Script {
     function run() external returns(address){
         vm.startBroadcast(adminAddress);
             ine = new InstitutoNacionalElectoral(adminAddress,rfc,nombre,telefono,correo);
-            console.log("INE address: ", address(ine));
-            console.log("Direccion es admin: ", ine.hasRole(keccak256("ROL_ADMINISTRADOR"), adminAddress));
-            console.log("Nombre: ", ine.verDatosEmpleado(adminAddress).nombre);
+            ine.nuevoEmpleado(
+                employeeAddress,
+                2,
+                "Cosme Fulanito",
+                "cosm-55555",
+                "65525354156",
+                "cosme@ine.mx"
+            );
         return(address(ine));
     }
 }

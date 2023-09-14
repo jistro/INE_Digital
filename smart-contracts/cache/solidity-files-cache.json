@@ -1461,8 +1461,8 @@
       }
     },
     "script/DeploySystemTest.s.sol": {
-      "lastModificationDate": 1694478047689,
-      "contentHash": "f171f733b6f1caa503b9d353b4c2bfd3",
+      "lastModificationDate": 1694635372351,
+      "contentHash": "ba2979b304b5f7d05f4fce59f477510e",
       "sourceName": "script/DeploySystemTest.s.sol",
       "solcConfig": {
         "settings": {
@@ -1534,8 +1534,8 @@
       }
     },
     "src/CredencialDigital.sol": {
-      "lastModificationDate": 1694569011854,
-      "contentHash": "0bb451d0e259a40ab195e0e02362cac0",
+      "lastModificationDate": 1694638092225,
+      "contentHash": "0a5edf75d9e2a2bc80ea31f1fee99724",
       "sourceName": "src/CredencialDigital.sol",
       "solcConfig": {
         "settings": {
@@ -1648,8 +1648,8 @@
       }
     },
     "src/SistemaPermisos.sol": {
-      "lastModificationDate": 1694383049286,
-      "contentHash": "ff3c9a7d93fa62faf66f47391f26995b",
+      "lastModificationDate": 1694647329280,
+      "contentHash": "bbcbf60153826e95e30880954ee24860",
       "sourceName": "src/SistemaPermisos.sol",
       "solcConfig": {
         "settings": {

@@ -41,8 +41,7 @@
 
 .container__data,
 .container__leftSide,
-.container__rightSide,
-.container__info {
+.container__rightSide {
   flex: 1;
   max-width: auto;
   margin: 5px;
@@ -50,6 +49,45 @@
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cointainer__disconected {
+  flex: 1;
+  max-width: auto;
+  margin: 5px;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #ff6b6b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cointainer__disconected h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 5px 0;
+  padding: 1px;
+  display: flex;
+  justify-content: center;
+}
+
+.cointainer__disconected p {
+  font-size: 18px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 3px 0;
+  padding: 1px;
+  display: flex;
+  justify-content: center;
+}
+
+.container__info {
+  flex: 1;
+  max-width: auto;
+  margin: 5px;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #ffffff;
 }
 
 .container__data:hover {
@@ -300,6 +338,8 @@
 
 
 
+
+
 /* Responsive Styles for Mobile */
 @media (max-width: 800px) {
   .grid {
@@ -332,7 +372,6 @@
   .containerHEADER__logo {
     height: 30px;
   }
-
 
   .header {
     padding: 0 2%;
@@ -374,9 +413,11 @@
 
 
 
-  .button__confirmAction {
-    padding: 10px 20px;
-    font-size: 0.8rem;
+  .button__confirmAction,
+  .closeButton,
+  .okButton {
+    padding: 10px 15px; /* Ajusta el espaciado de los botones */
+    font-size: 1rem; /* Ajusta el tamaño de fuente de los botones */
   }
 
   .title {
@@ -415,4 +456,26 @@
     font-size: 0.8rem;
     text-align: left;
   }
+
+    /* Estilos para la tarjeta de identidad */
+    .card_identidad {
+      width: 100%; /* Ajusta el ancho de la tarjeta */
+    }
+  
+    .card_identidad p {
+      font-size: 1rem; /* Ajusta el tamaño de fuente de los párrafos */
+    }
+  
+    .card_identidad .direccion {
+      margin-top: 10px; /* Reduce el margen superior de la dirección */
+    }
+  
+    /* Estilos para la tarjeta sin datos */
+    .card_noData {
+      width: 100%; /* Ajusta el ancho de la tarjeta sin datos */
+    }
+  
+    .card_noData p {
+      font-size: 1.5rem; /* Ajusta el tamaño de fuente de los párrafos */
+    }
 }

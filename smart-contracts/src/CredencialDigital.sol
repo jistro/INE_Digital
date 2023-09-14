@@ -101,6 +101,13 @@ contract CredencialDigital is ERC721, AccessControl {
         ciudadano[tokenId].direccion = Direccion(calle, numeroExterior, numeroInterior, colonia, codigoPostal, seccion);
     }
 
+    function renuevaVigencia(uint256 tokenId) public onlyRole(MINTER_ROLE) {
+        if (ciudadano[tokenId].fechaRegistro == 0){
+            revert CredencialDigital__IdNoexiste();
+        }
+        ciudadano[tokenId].fechaVigencia = block.timestamp + 3650 days;
+    }
+
     function getData(uint256 tokenId) public view onlyRole(DATA_PROVIDER_ROLE) returns (DatosCredencial memory) {
         return ciudadano[tokenId];
     }
@@ -108,6 +115,10 @@ contract CredencialDigital is ERC721, AccessControl {
     function getIDwithSender() public view returns (DatosCredencial memory) {
         uint256 id = credencialPorDireccion[msg.sender];
         return ciudadano[id];
+    }
+
+    function getIdNumberWithSender() public view returns (uint256) {
+        return credencialPorDireccion[msg.sender];
     }
 
     // The following functions are overrides required by Solidity.

@@ -7,6 +7,7 @@ import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol"
 contract SistemaPermisos is AccessControl {
     error SistemaPermisos__AccesoDenegado();
     error SistemaPermisos__PermisoInvalido();
+    error SistemaPermisos__PermisoCaducado();
 
     address internal s_credencialDigitalAddress;
     CredencialDigital internal credencialDigital;
@@ -101,8 +102,13 @@ contract SistemaPermisos is AccessControl {
         uint8 tipoPermiso, 
         uint256 fechaCaducidad
     ){
-        if (permisos[id][msg.sender].fechaCaducidad < block.timestamp){
+        /// por defecto fechaCaducidad es 0 por lo tanto no hay permiso
+        if (permisos[id][msg.sender].fechaCaducidad == 0){
             revert SistemaPermisos__AccesoDenegado();
+        }
+        /// chechamos que el permiso no haya caducado es decir que la fecha de caducidad sea mayor a la fecha actual
+        if (block.timestamp > permisos[id][msg.sender].fechaCaducidad){
+            revert SistemaPermisos__PermisoCaducado();
         }
 
         CredencialDigital.DatosCredencial memory datosCredencial = credencialDigital.getData(id);

@@ -10,6 +10,8 @@ import { readContract, prepareWriteContract, writeContract } from '@wagmi/core';
 import { ContractFunctionExecutionError } from 'viem';
 import { format } from 'date-fns';
 
+import { FaCircleInfo } from "react-icons/fa6";
+
 import InstitutoNacionalElectoral from '../abis/InstitutoNacionalElectoral.json';
 import CredencialDigital from '../abis/CredencialDigital.json';
 import SistemaPermisos from '../abis/SistemaPermisos.json';
@@ -55,14 +57,14 @@ function formatUnixEpochTime(unixEpochTime: number | bigint): string {
 
 const Home: NextPage = () => {
     const [isClient, setIsClient] = useState(false);
-    const [idUser , setIdUser] = useState<any>(null);
+    const [idUser, setIdUser] = useState<any>(null);
     const [IDMEXD, setIDMEXD] = useState<any>(null);
     const { address, isConnected } = useAccount();
     const [txHashes, setTxHashes] = useState<any[]>([]);
 
     const [credencialAddress, setCredencialAddress] = useState<any>(null);
     const [sistemaPermisosAddress, setSistemaPermisosAddress] = useState<any>(null);
-    
+
     useEffect(() => {
         setIsClient(true);
     }, []);
@@ -117,7 +119,7 @@ const Home: NextPage = () => {
             });
         }
     }
-        , [isConnected,credencialAddress, address]);
+        , [isConnected, credencialAddress, address]);
 
 
     const newPermiso = () => {
@@ -126,7 +128,7 @@ const Home: NextPage = () => {
             'newPermiso_fecha',
             'newPermiso_nivel',
         ];
-        
+
         const inputs = inputIds.map(id => document.getElementById(id) as HTMLInputElement);
         const values = inputs.map(input => {
             const value = input.value;
@@ -156,15 +158,13 @@ const Home: NextPage = () => {
             address: sistemaPermisosAddress,
             abi: SistemaPermisos.abi,
             functionName: 'setPermiso',
-            args: [IDMEXD, nivelNumber, values[0], unixTime,],
+            args: [IDMEXD, nivelNumber, values[0], unixTime],
         }).then((data) => {
             writeContract(data).then((data) => {
                 setTxHashes([14, data.hash]);
             }).catch(handleTxError);
         }).catch(handleError);
     };
-
-
 
     return (
         <div className={styles.container}>
@@ -178,18 +178,21 @@ const Home: NextPage = () => {
             </Head>
 
             <header className={styles.header}>
-                <ConnectButton
-                    label='Conectar a red'
-                    showBalance={{
-                        smallScreen: false,
-                        largeScreen: true,
-                    }}
-                    accountStatus="address"
-                    chainStatus={{
-                        smallScreen: "none",
-                        largeScreen: "icon",
-                    }}
-                />
+                <h1><img src="/logo-ine-st.png" alt="Logo" className={styles.header___logo} /> Mi credencial digital</h1>
+                <div>
+                    <ConnectButton
+                        label='Conectar a red'
+                        showBalance={{
+                            smallScreen: false,
+                            largeScreen: true,
+                        }}
+                        accountStatus="address"
+                        chainStatus={{
+                            smallScreen: "none",
+                            largeScreen: "icon",
+                        }}
+                    />
+                </div>
             </header>
 
 
@@ -200,10 +203,26 @@ const Home: NextPage = () => {
                         <p>Conectate a la red para acceder a la credencial digital</p>
                     </div>
                 )}
-                {isClient && isConnected && idUser && IDMEXD && (
+
+                {isClient && isConnected && idUser && idUser.claveElector === '' && (
                     <div className={styles.container__card}>
-                    { idUser.claveElector !== '' ? (
-                        
+                        <div className={styles.card_noData}>
+                            < FaCircleInfo 
+                                size={80}
+                                color="#ffb8b8"
+                            />
+                            <p>No hay una credencial digital asociada a esta cuenta</p>
+                            <p>Por favor, cambie la cuenta en la que tiene asociada una credencial digital o solicita en tu modulo INE mas cercano una credencial digital.</p>
+                            <button className={styles.button__confirmAction} onClick={() => { window.location.href = '/'; }}>
+                                Regresar
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {isClient && isConnected && idUser && IDMEXD && idUser.claveElector !== '' && (
+                    <>
+                        <div className={styles.container__card}>
                             <div className={styles.card_identidad}>
                                 <h2>IDEMEXD{IDMEXD.toString()}</h2>
                                 <p>Nombre: {idUser.identidad.nombre} {idUser.identidad.apellidoPaterno} {idUser.identidad.apellidoMaterno}</p>
@@ -212,26 +231,15 @@ const Home: NextPage = () => {
                                 <p>Fecha de registro {formatUnixEpochTime(idUser.fechaRegistro)}</p>
                                 <p>Fecha de expiracion {formatUnixEpochTime(idUser.fechaVigencia)}</p>
                                 <div className={styles.direccion}>
-                                <p>Calle: {idUser.direccion.calle}</p>
-                                <p>Número Exterior: {idUser.direccion.numeroExterior.toString()}</p>
-                                {idUser.direccion.numeroInterior !== 'n/a' && <p>Número Interior: {idUser.direccion.numeroInterior}</p>}
-                                <p>Colonia: {idUser.direccion.colonia}</p>
-                                <p>Código Postal: {idUser.direccion.codigoPostal.toString()}</p>
-                                <p>Sección: {idUser.direccion.seccion.toString()}</p>
+                                    <p>Calle: {idUser.direccion.calle}</p>
+                                    <p>Número Exterior: {idUser.direccion.numeroExterior.toString()}</p>
+                                    {idUser.direccion.numeroInterior !== 'n/a' && <p>Número Interior: {idUser.direccion.numeroInterior}</p>}
+                                    <p>Colonia: {idUser.direccion.colonia}</p>
+                                    <p>Código Postal: {idUser.direccion.codigoPostal.toString()}</p>
+                                    <p>Sección: {idUser.direccion.seccion.toString()}</p>
                                 </div>
                             </div>
-                            
-                        
-                        ):(
-                            <div className={styles.card_noData}>
-                                <p>No hay una credencial digital asociada a esta cuenta</p>
-                                <p>Por favor, cambie la cuenta en la que tiene asociada una credencial digital o solicita en tu modulo INE mas cercano una credencial digital.</p>
-                            </div>
-                        )}
                         </div>
-                    )}
-                    
-                    {isConnected && idUser && idUser.claveElector !== '' && (
                         <div className={styles.container__twoSideByside}>
                             <div className={styles.container__info}>
                                 <h2>Informacion</h2>
@@ -239,10 +247,10 @@ const Home: NextPage = () => {
                                     Tu credencial digital te permite dar acceso a tus datos personales a quien tu quieras mediante niveles de acceso.
                                 </p>
                                 <p>Existen varios niveles:</p>
-                                <br/>
+                                <br />
                                 <strong>Nivel de acceso 1</strong>
                                 <p>Este nivel da acceso total a tus datos personales uselo con precaucion</p>
-                                <br/>
+                                <br />
                                 <strong>Nivel de acceso 2</strong>
                                 <p>Este nivel da acceso a:</p>
                                 <ul>
@@ -252,7 +260,7 @@ const Home: NextPage = () => {
                                     <li>CURP</li>
                                     <li>Direccion</li>
                                 </ul>
-                                <br/>
+                                <br />
                                 <strong>Nivel de acceso 3</strong>
                                 <p>Este nivel da acceso a:</p>
                                 <ul>
@@ -261,9 +269,9 @@ const Home: NextPage = () => {
                                     <li>Apellido materno</li>
                                     <li>CURP</li>
                                 </ul>
-                                <br/>
+                                <br />
                                 <p> Recuerde elegir el nivel de acceso adecuado para cada persona a la que le de permiso ademas de la fecha de expiracion</p>
-                                <br/>
+                                <br />
                                 <strong>Ejemplo:</strong>
                                 <ul>
                                     <li>
@@ -274,39 +282,40 @@ const Home: NextPage = () => {
                                     </li>
                                 </ul>
                             </div>
-                            { txHashes[0] === 14 ? (
-                                    <SuccessMessage
-                                        message="Permiso dado"
-                                        txHash={txHashes[1]}
-                                        clearTxHashes={() => setTxHashes([])}
-                                    />
-                                ) : (
-                                    <div className={styles.container__leftSide}>
-                                        <h2>Dar permiso</h2>
-                                        <p>Firma publica del solicitante de acceso</p>
-                                        <input id="newPermiso_address" className={styles.newEmployee__input} placeholder="Firma publica" />
-                                        <p>Fecha de expiracion</p>
-                                        <input
+                            {txHashes[0] === 14 ? (
+                                <SuccessMessage
+                                    message="Permiso en tramite"
+                                    txHash={txHashes[1]}
+                                    clearTxHashes={() => setTxHashes([])}
+                                />
+                            ) : (
+                                <div className={styles.container__leftSide}>
+                                    <h2>Dar permiso</h2>
+                                    <p>Firma publica del solicitante de acceso</p>
+                                    <input id="newPermiso_address" className={styles.newEmployee__input} placeholder="Firma publica" />
+                                    <p>Fecha de expiracion</p>
+                                    <input
                                         type="datetime-local"
                                         id="newPermiso_fecha"
                                         className={styles.newEmployee__input}
                                         placeholder="Fecha y hora de expiración"
-                                        />
-                                        
-                                        <p>Nivel de acceso</p>
-                                        <select id="newPermiso_nivel" className={styles.newEmployee__select}>
-                                                    <option value="" disabled selected>Seleccciona un nivel de acceso</option>
-                                                    <option value='1'>Nivel de acceso 1</option>
-                                                    <option value='2'>Nivel de acceso 2</option>
-                                                    <option value='3'>Nivel de acceso 3</option>
-                                        </select>
-                                        <button className={styles.button__confirmAction} onClick={newPermiso}>
-                                            Dar permiso
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                    )}
+                                    />
+
+                                    <p>Nivel de acceso</p>
+                                    <select id="newPermiso_nivel" className={styles.newEmployee__select}>
+                                        <option value="" disabled selected>Seleccciona un nivel de acceso</option>
+                                        <option value='1'>Nivel de acceso 1</option>
+                                        <option value='2'>Nivel de acceso 2</option>
+                                        <option value='3'>Nivel de acceso 3</option>
+                                    </select>
+                                    <button className={styles.button__confirmAction} onClick={newPermiso}>
+                                        Dar permiso
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
             </main>
 
             <footer className={styles.footer}>

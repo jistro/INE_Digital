@@ -82,10 +82,30 @@ contract SistemaPermisos is AccessControl {
             permiso,
             fechaCaducidad
         );
+
         emit PermisoDado(
             fechaCaducidad,
             solicitante,
             permiso
+        );
+    }
+    /**
+     *  @notice Función para ver el permiso y la fecha de caducidad de un id de credencial
+     *          conforme el solicitante que lo solicito
+     *  @param id id de la credencial
+     *  @param direccionSolicitante Dirección del solicitante
+     *  @return permiso 
+     *  @return fechaCaducidad
+     *  @dev la fecha de retorno es conforme a la unidad de tiempo UNIX 
+     *       y no existe ningun sistema de verificación de la fecha de caducidad
+     *       ya que esta funcion es para ver el permiso y la fecha de caducidad
+     *       y no para solicitar los datos de la credencial
+     */
+    function verPermisoYCaducidad(uint256 id, address direccionSolicitante)
+    external view returns (uint8 permiso, uint256 fechaCaducidad){
+        return (
+            permisos[id][direccionSolicitante].tipoPermiso,
+            permisos[id][direccionSolicitante].fechaCaducidad
         );
     }
     /**
@@ -110,7 +130,6 @@ contract SistemaPermisos is AccessControl {
         if (block.timestamp > permisos[id][msg.sender].fechaCaducidad){
             revert SistemaPermisos__PermisoCaducado();
         }
-
         CredencialDigital.DatosCredencial memory datosCredencial = credencialDigital.getData(id);
 
         if (permisos[id][msg.sender].tipoPermiso == 1){ /// Permiso completo
@@ -124,10 +143,10 @@ contract SistemaPermisos is AccessControl {
             return (
                 CredencialDigital.DatosCredencial(
                     datosCredencial.identidad,
-                    datosCredencial.claveElector,
+                    "",
                     datosCredencial.curp,
-                    datosCredencial.fechaRegistro,
-                    datosCredencial.fechaVigencia,
+                    0,
+                    0,
                     datosCredencial.direccion
                 ),
                 permisos[id][msg.sender].tipoPermiso,
@@ -140,8 +159,8 @@ contract SistemaPermisos is AccessControl {
                     datosCredencial.identidad,
                     "",
                     datosCredencial.curp,
-                    datosCredencial.fechaRegistro,
-                    datosCredencial.fechaVigencia,
+                    0,
+                    0,
                     CredencialDigital.Direccion(
                         "",
                         0,

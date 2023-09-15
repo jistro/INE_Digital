@@ -11,8 +11,8 @@ contract CredencialDigital is ERC721, AccessControl {
     error CredencialDigital__IdNoexiste();
     error CredencialDigital__CredecialYaExiste();
 
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant DATA_PROVIDER_ROLE = keccak256("DATA_PROVIDER_ROLE");
+    bytes32 public constant ROL_INE = keccak256("ROL_INE");
+    bytes32 public constant ROL_PROVEEDOR_DATOS = keccak256("ROL_PROVEEDOR_DATOS");
 
     Counters.Counter private _tokenIdCounter;
 
@@ -48,8 +48,8 @@ contract CredencialDigital is ERC721, AccessControl {
 
     constructor(address addressBroker, address addressINE) ERC721("CredencialDigital", "INE") {
         _grantRole(DEFAULT_ADMIN_ROLE, addressINE);
-        _grantRole(MINTER_ROLE, addressINE);
-        _grantRole(DATA_PROVIDER_ROLE, addressBroker);
+        _grantRole(ROL_INE, addressINE);
+        _grantRole(ROL_PROVEEDOR_DATOS, addressBroker);
     }
 
     
@@ -61,7 +61,7 @@ contract CredencialDigital is ERC721, AccessControl {
         string memory claveElector,
         string memory curp,
         uint8 generoBiologico
-    ) public onlyRole(MINTER_ROLE) returns(uint256 id) {
+    ) public onlyRole(ROL_INE) returns(uint256 id) {
         if(credencialPorClaveElector[claveElector] != 0){
             revert CredencialDigital__CredecialYaExiste();
         }
@@ -94,21 +94,21 @@ contract CredencialDigital is ERC721, AccessControl {
         string memory colonia,
         uint256 codigoPostal,
         uint256 seccion
-    ) public onlyRole(MINTER_ROLE) {
+    ) public onlyRole(ROL_INE) {
         if (ciudadano[tokenId].fechaRegistro == 0){
             revert CredencialDigital__IdNoexiste();
         }
         ciudadano[tokenId].direccion = Direccion(calle, numeroExterior, numeroInterior, colonia, codigoPostal, seccion);
     }
 
-    function renuevaVigencia(uint256 tokenId) public onlyRole(MINTER_ROLE) {
+    function renuevaVigencia(uint256 tokenId) public onlyRole(ROL_INE) {
         if (ciudadano[tokenId].fechaRegistro == 0){
             revert CredencialDigital__IdNoexiste();
         }
         ciudadano[tokenId].fechaVigencia = block.timestamp + 3650 days;
     }
 
-    function getData(uint256 tokenId) public view onlyRole(DATA_PROVIDER_ROLE) returns (DatosCredencial memory) {
+    function getData(uint256 tokenId) public view onlyRole(ROL_PROVEEDOR_DATOS) returns (DatosCredencial memory) {
         return ciudadano[tokenId];
     }
 

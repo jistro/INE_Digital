@@ -11,7 +11,6 @@ import { ContractFunctionExecutionError } from 'viem';
 import { format, set } from 'date-fns';
 
 import InstitutoNacionalElectoral from '../abis/InstitutoNacionalElectoral.json';
-import CredencialDigital from '../abis/CredencialDigital.json';
 import SistemaPermisos from '../abis/SistemaPermisos.json';
 import { id } from 'date-fns/locale';
 
@@ -32,14 +31,6 @@ const handleError = (error: any) => {
     console.error("Error:", error);
 };
 
-const handleTxError = (error: any) => {
-    if (error instanceof Error) {
-        alert("Acción cancelada por el usuario.");
-    }
-    console.error("Error:", error);
-};
-
-
 function formatUnixEpochTime(unixEpochTime: number | bigint): string {
     const unixEpochTimeAsNumber = typeof unixEpochTime === 'bigint' ? Number(unixEpochTime) : unixEpochTime;
     const formattedDate = format(new Date(unixEpochTimeAsNumber * 1000), 'dd/MM/yyyy HH:mm');
@@ -49,12 +40,13 @@ function formatUnixEpochTime(unixEpochTime: number | bigint): string {
 var idmx = 0;
 
 const Home: NextPage = () => {
-    
+
     const [isClient, setIsClient] = useState(false);
-    const [idUser , setIdUser] = useState<any>(null);
+    const [idUser, setIdUser] = useState<any>(null);
     const { address, isConnected } = useAccount();
     const [sistemaPermisosAddress, setSistemaPermisosAddress] = useState<any>(null);
-    
+    const [metadataPermisos, setMetadataPermisos] = useState<any>(null);
+
     useEffect(() => {
         setIsClient(true);
     }, []);
@@ -74,6 +66,7 @@ const Home: NextPage = () => {
             setSistemaPermisosAddress(null);
             setIdUser(null);
             idmx = 0;
+            setMetadataPermisos(null);
         }
     }, [isConnected, address]);
 
@@ -111,6 +104,37 @@ const Home: NextPage = () => {
         });
     };
 
+    const searchAccess = () => {
+        const inputIds = [
+            'searchAccess_input',
+        ];
+
+        const inputs = inputIds.map(id => document.getElementById(id) as HTMLInputElement);
+        const values = inputs.map(input => {
+            const value = input.value;
+            input.value = '';
+            return value;
+        }
+        );
+        if (values.includes('')) {
+            alert('Ingresa el id');
+            return;
+        }
+        const idNumber = parseInt(values[0]);
+
+        prepareWriteContract({
+            address: sistemaPermisosAddress,
+            abi: SistemaPermisos.abi,
+            account: address,
+            functionName: 'verPermisoYCaducidad',
+            args: [idNumber, address],
+        }).then((res) => {
+            setMetadataPermisos([res.result, idNumber.toString()]);
+            console.log(metadataPermisos);
+        }).catch(handleError);
+    };
+
+
 
 
     return (
@@ -123,80 +147,108 @@ const Home: NextPage = () => {
                 />
                 <link href="/favicon.ico" rel="icon" />
             </Head>
-
             <header className={styles.header}>
-                <ConnectButton
-                    label='Conectar a red'
-                    showBalance={{
-                        smallScreen: false,
-                        largeScreen: true,
-                    }}
-                    accountStatus="address"
-                    chainStatus={{
-                        smallScreen: "none",
-                        largeScreen: "icon",
-                    }}
-                />
+                <h1><img src="/logo-ine-st.png" alt="Logo" className={styles.header___logo} />Ver datos</h1>
+                <div>
+                    <ConnectButton
+                        label='Conectar a red'
+                        showBalance={{
+                            smallScreen: false,
+                            largeScreen: true,
+                        }}
+                        accountStatus="address"
+                        chainStatus={{
+                            smallScreen: "none",
+                            largeScreen: "icon",
+                        }}
+                    />
+                </div>
             </header>
 
 
             <main className={styles.main}>
-                
+
                 {isClient && isConnected ? (
                     <>
-                    <div className={styles.container__twoSideByside}>
-                        <div className={styles.container__leftSide}>
-                            <h2>Tus datos</h2>
-                            <p className={styles.addressText}>Firma publica: {address}</p>
+                        <div className={styles.container__twoSideByside}>
+                            <div className={styles.container__leftSide}>
+                                <h2>Tus datos</h2>
+                                <p className={styles.addressText}>Firma publica: {address}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={styles.container__twoSideByside}>
-                        <div className={styles.container__leftSide}>
-                            <h2>Busqueda de datos</h2>
+                        <div className={styles.container__twoSideByside}>
+                            <div className={styles.container__leftSide}>
+                                <h2>Busqueda de datos</h2>
                                 <input
                                     type="number"
                                     id="search_input"
                                     placeholder="ID"
                                 />
-                                <button 
-                                className={styles.button__confirmAction}
-                                onClick={search}
+                                <button
+                                    className={styles.button__confirmAction}
+                                    onClick={search}
                                 >
                                     Buscar
                                 </button>
-                        </div>
-                        {idUser && idUser[1] !== 0 && (
-                            <div className={styles.container__rightSide}>
-                                <h2>IDMEXD{idmx.toString()}</h2>
-                                <p>Permiso nivel {idUser[1].toString()}</p>
-                                <p>Fecha de caduciad de permiso</p>
-                                <p>{formatUnixEpochTime(idUser[2])}</p>
-                                <br/>
-                                <h3>Datos de identidad</h3>
-                                <p>Nombre: {idUser[0].identidad.nombre}</p>
-                                <p>Apellido Paterno: {idUser[0].identidad.apellidoPaterno}</p>
-                                <p>Apellido Materno: {idUser[0].identidad.apellidoMaterno}</p>
-                                <p>Genero: {idUser[0].identidad.generoBiologico === '1' ? 'M':'H'}</p>
-                                <p>CURP: {idUser[0].curp}</p>
-                                {idUser[1] === 1 && (<h3>Datos de Elector</h3>)}
-                                {idUser[0].claveElector !== '' && (<p>Clave de elector: {idUser[0].claveElector}</p>)}
-                                {idUser[0].fechaRegistro !== 0 && (<p>Fecha de registro: {formatUnixEpochTime(idUser[0].fechaRegistro)}</p>)}
-                                {idUser[0].fechaVigencia !== 0 && (<p>Fecha de vigencia: {formatUnixEpochTime(idUser[0].fechaVigencia)}</p>)}
-                                {idUser[1] <= 2 && (<h3>Direccion</h3>)}
-                                {idUser[0].direccion.calle !== '' && (<p>Calle: {idUser[0].direccion.calle}</p>)}
-                                {idUser[0].direccion.codigoPostal !== 0 && (<p>Codigo postal: {idUser[0].direccion.codigoPostal.toString()}</p>)}
-                                {idUser[0].direccion.colonia !== '' && (<p>Colonia: {idUser[0].direccion.colonia}</p>)}
-                                {idUser[0].direccion.numeroExterior !== 0 && (<p>Numero exterior: {idUser[0].direccion.numeroExterior.toString()}</p>)}
-                                {idUser[0].direccion.numeroInterior !== '' && idUser[0].direccion.numeroInterior !== 'n/a' && (<p>numeroInterior: {idUser[0].direccion.numeroInterior}</p>)}
-                                {idUser[0].direccion.seccion !== 0 && (<p>Seccion: {idUser[0].direccion.seccion.toString()}</p>)}
-                                <button className={styles.button__confirmAction} onClick={ () => {
-                                    setIdUser(null);
-                                    idmx = 0;
-                                }
-                                }>Cerrar</button>
                             </div>
-                        )}
-                    </div>
+                            {idUser && idUser[1] !== 0 && (
+                                <div className={styles.container__rightSide}>
+                                    <h2>IDMEXD{idmx.toString()}</h2>
+                                    <p>Permiso nivel {idUser[1].toString()}</p>
+                                    <p>Fecha de caduciad de permiso</p>
+                                    <p>{formatUnixEpochTime(idUser[2])}</p>
+                                    <br />
+                                    <h3>Datos de identidad</h3>
+                                    <p>Nombre: {idUser[0].identidad.nombre}</p>
+                                    <p>Apellido Paterno: {idUser[0].identidad.apellidoPaterno}</p>
+                                    <p>Apellido Materno: {idUser[0].identidad.apellidoMaterno}</p>
+                                    <p>Genero: {idUser[0].identidad.generoBiologico === '1' ? 'M' : 'H'}</p>
+                                    <p>CURP: {idUser[0].curp}</p>
+                                    {idUser[1] === 1 && (<h3>Datos de Elector</h3>)}
+                                    {idUser[0].claveElector !== '' && (<p>Clave de elector: {idUser[0].claveElector}</p>)}
+                                    {idUser[0].fechaRegistro !== 0 && (<p>Fecha de registro: {formatUnixEpochTime(idUser[0].fechaRegistro)}</p>)}
+                                    {idUser[0].fechaVigencia !== 0 && (<p>Fecha de vigencia: {formatUnixEpochTime(idUser[0].fechaVigencia)}</p>)}
+                                    {idUser[1] <= 2 && (
+                                        <>
+                                            <h3>Direccion</h3>
+                                            <p>Calle: {idUser[0].direccion.calle}</p>
+                                            <p>Codigo postal: {idUser[0].direccion.codigoPostal.toString()}</p>
+                                            <p>Colonia: {idUser[0].direccion.colonia}</p>
+                                            <p>Numero exterior: {idUser[0].direccion.numeroExterior.toString()}</p>
+                                        </>)}
+                                    {idUser[1] <= 2 && idUser[0].direccion.numeroInterior !== 'n/a' && (<p>numeroInterior: {idUser[0].direccion.numeroInterior}</p>)}
+                                    {idUser[1] <= 2 && (<p>Seccion: {idUser[0].direccion.seccion.toString()}</p>)}
+                                    <button className={styles.button__confirmAction} onClick={() => {
+                                        setIdUser(null);
+                                        idmx = 0;
+                                    }}>Cerrar</button>
+                                </div>
+                            )}
+                        </div>
+                        <div className={styles.container__twoSideByside}>
+                            <div className={styles.container__leftSide}>
+                                <h2>Buscar permisos</h2>
+                                <input type="number" id="searchAccess_input" placeholder="ID" />
+                                <button className={styles.button__confirmAction} onClick={searchAccess}>Buscar</button>
+                            </div>
+                            {metadataPermisos && (
+                                <div className={styles.container__rightSide}>
+                                    <h2>IDMEXD{metadataPermisos[1]}</h2>
+                                    <p>Permiso nivel {metadataPermisos[0][0]}</p>
+                                    <p>Fecha de caduciad de permiso</p>
+                                    { Date.now() < metadataPermisos[0][1] ? ( 
+                                        <p style={{color: 'red'}}>{formatUnixEpochTime(metadataPermisos[0][1])}</p>
+                                    ) : (
+                                        <p>{formatUnixEpochTime(metadataPermisos[0][1])}</p>
+                                    )}
+                                    <br />
+                                    <button className={styles.button__confirmAction} onClick={() => {
+                                        setMetadataPermisos(null);
+                                    }}>Cerrar</button>
+
+                                </div>
+                            )}
+                        </div>
                     </>
                 ) : (
                     <div className={styles.container__twoSideByside}>
@@ -207,7 +259,7 @@ const Home: NextPage = () => {
                     </div>
                 )}
 
-                
+
             </main>
 
             <footer className={styles.footer}>

@@ -65,7 +65,12 @@ const Home: NextPage = () => {
     const UserInfo = ({ address = '', nombre = '', status = false, rol = 0, }: { address?: string; nombre?: string; status?: boolean; rol?: number; }) => (
         <>
             {rol === 0 ? (
-                <h1>Empleado no registrado</h1>
+                <>
+                    <h2>Empledado no registrado</h2>
+                    <p> Cambie de cuenta o comunícate con tu administrador </p>
+                    <p>Firma publica: <span className={styles.addressText}>{address}</span></p>
+                    <button className={styles.button__confirmAction} onClick={() => window.location.href = '/'}>Salir</button>
+                </>
             ) : (
                 <>
                     <h2>Mis datos</h2>
@@ -258,6 +263,21 @@ const Home: NextPage = () => {
             alert("Ingresa una firma pública válida");
             return;
         }
+        if (values[0] === address) {
+            alert("No puedes usar tu propia firma pública");
+            return;
+        }
+        //chechar si nombre tieen mayuscula en la primera letra
+        if (values[1].match(/[A-Z]/) === null) {
+            values[1] = values[1].charAt(0).toUpperCase() + values[1].slice(1);
+        }
+        if (values[2].match(/[A-Z]/) === null) {
+            values[2] = values[2].charAt(0).toUpperCase() + values[2].slice(1);
+        }
+        if (values[3].match(/[A-Z]/) === null) {
+            values[3] = values[3].charAt(0).toUpperCase() + values[3].slice(1);
+        }
+
         const direccionCredencial = values[0];
         const nombres = values[1];
         const apellidoPaterno = values[2];
@@ -335,18 +355,21 @@ const Home: NextPage = () => {
             </Head>
 
             <header className={styles.header}>
-                <ConnectButton
-                    label='Conectar a red'
-                    showBalance={{
-                        smallScreen: false,
-                        largeScreen: true,
-                    }}
-                    accountStatus="address"
-                    chainStatus={{
-                        smallScreen: "none",
-                        largeScreen: "icon",
-                    }}
-                />
+                <h1><img src="/logo-ine-st.png" alt="Logo" className={styles.header___logo} /> empleado</h1>
+                <div>
+                    <ConnectButton
+                        label='Conectar a red'
+                        showBalance={{
+                            smallScreen: false,
+                            largeScreen: true,
+                        }}
+                        accountStatus="address"
+                        chainStatus={{
+                            smallScreen: "none",
+                            largeScreen: "icon",
+                        }}
+                    />
+                </div>
             </header>
 
 
@@ -374,8 +397,6 @@ const Home: NextPage = () => {
                         {userConected.areaTrabajo === 1 && userConected.status ? (
                             <>
                                 <div className={styles.container__twoSideByside}>
-
-
                                     {txHashes.length > 0 && txHashes[0] === 11 ? (
                                         <SuccessMessage message={'Empleado creado con éxito'} txHash={txHashes[1]} clearTxHashes={() => setTxHashes([])} />
                                     ) : (

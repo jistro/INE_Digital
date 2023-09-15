@@ -202,6 +202,10 @@ contract InstitutoNacionalElectoral is AccessControl{
         );
     }
 
+    function renuevaVigencia(uint256 idCredencial) public soloEmpleado {
+        credencialDigital.renuevaVigencia(idCredencial);
+    }
+
     function verDatosEmpleado (
         address _direccionEmpleado
     ) public view  soloAdmin returns (

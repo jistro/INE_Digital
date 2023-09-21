@@ -88,6 +88,10 @@ Ejecuta el siguiente comando para instalar las dependencias del frontend:
 ```shell
 npm install
 ```
+Ejecutamos de manera local la web app con el siguente comando:
+```shell
+make local
+```
 ¡Listo! Ahora tienes el sistema instalado y en funcionamiento en tu entorno local utilizando npm y Foundry.
 
 ## Literatura en que se baso el proyecto

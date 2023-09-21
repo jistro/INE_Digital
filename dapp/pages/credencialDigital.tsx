@@ -147,11 +147,32 @@ const Home: NextPage = () => {
         /// convertimos de input date a unix
         const unixTime = Math.floor(new Date(values[1]).getTime() / 1000);
 
+        //checar que la fecha no sea menor a la actual
+        const fechaActual = Math.floor(new Date().getTime() / 1000);
+        if (unixTime < fechaActual) {
+            alert('La fecha de expiracion no puede ser menor a la fecha actual');
+            return;
+        }
+
+        //chechar que la hora con la fecha no sea menor a la actual con 30 minutos de diferencia
+        const fechaActualCon30Minutos = fechaActual + 1800;
+        if (unixTime < fechaActualCon30Minutos) {
+            alert('La fecha de expiracion no puede ser menor a la fecha actual con 30 minutos de diferencia');
+            return;
+        }
+
 
         /// crear una alerta de confirmacion
         const confirmacion = confirm(`¿Estas seguro de dar permiso a ${values[0]} con nivel ${values[2]} hasta el ${values[1]}?`);
         if (!confirmacion) {
             return;
+        }
+
+        if (values[2] === '1') {
+            const confirmacionNivel1 = confirm(`¿Estas seguro de dar permiso de nivel 1 a ${values[0]}?`);
+            if (!confirmacionNivel1) {
+                return;
+            }
         }
         const nivelNumber = parseInt(values[2]);
         prepareWriteContract({

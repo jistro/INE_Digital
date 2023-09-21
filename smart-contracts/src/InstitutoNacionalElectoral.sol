@@ -15,6 +15,8 @@ contract InstitutoNacionalElectoral is AccessControl{
     error InstitutoNacionalElectoral__NoAutoBaja();
     error InstitutoNacionalElectoral__EmpleadoDadoDeBaja();
     error InstitutoNacionalElectoral__EmpleadoDadoDeAlta();
+    error InstitutoNacionalElectoral__CredencialDigital__IdNoexiste();
+    error InstitutoNacionalElectoral__CredencialDigital__FaltaDireccion();
 
     
 
@@ -191,6 +193,9 @@ contract InstitutoNacionalElectoral is AccessControl{
         uint256 codigoPostal,
         uint256 seccion
     ) public soloEmpleado {
+        if (credencialDigital.idExist(idCredencial) == false){
+            revert InstitutoNacionalElectoral__CredencialDigital__IdNoexiste();
+        }
         credencialDigital.cambioUbicacion(
             idCredencial,
             calle,
@@ -203,6 +208,12 @@ contract InstitutoNacionalElectoral is AccessControl{
     }
 
     function renuevaVigencia(uint256 idCredencial) public soloEmpleado {
+        if (credencialDigital.idExist(idCredencial) == false){
+            revert InstitutoNacionalElectoral__CredencialDigital__IdNoexiste();
+        }
+        if (credencialDigital.chechIfIDHasDirection(idCredencial) == false){
+            revert InstitutoNacionalElectoral__CredencialDigital__FaltaDireccion();
+        }
         credencialDigital.renuevaVigencia(idCredencial);
     }
 

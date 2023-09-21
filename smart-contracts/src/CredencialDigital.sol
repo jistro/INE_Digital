@@ -95,15 +95,21 @@ contract CredencialDigital is ERC721, AccessControl {
         uint256 codigoPostal,
         uint256 seccion
     ) public onlyRole(ROL_INE) {
-        if (ciudadano[tokenId].fechaRegistro == 0){
+        if (idExist(tokenId) == false){
             revert CredencialDigital__IdNoexiste();
         }
         ciudadano[tokenId].direccion = Direccion(calle, numeroExterior, numeroInterior, colonia, codigoPostal, seccion);
     }
 
     function renuevaVigencia(uint256 tokenId) public onlyRole(ROL_INE) {
-        if (ciudadano[tokenId].fechaRegistro == 0){
+        if (idExist(tokenId) == false){
             revert CredencialDigital__IdNoexiste();
+        }
+        if (ciudadano[tokenId].fechaVigencia < block.timestamp){
+            revert CredencialDigital__AccesoDenegado();
+        }
+        if (chechIfIDHasDirection(tokenId) == false){
+            revert CredencialDigital__AccesoDenegado();
         }
         ciudadano[tokenId].fechaVigencia = block.timestamp + 3650 days;
     }
@@ -119,6 +125,18 @@ contract CredencialDigital is ERC721, AccessControl {
 
     function getIdNumberWithSender() public view returns (uint256) {
         return credencialPorDireccion[msg.sender];
+    }
+
+    function idExist (uint256 tokenId) public view returns (bool) {
+        return _exists(tokenId);
+    }
+
+    function chechIfIDHasDirection(uint256 tokenId) public view returns (bool) {
+        Direccion memory aux = ciudadano[tokenId].direccion;
+        if (aux.codigoPostal == 0){
+            return false;
+        }
+        return true;
     }
 
     // The following functions are overrides required by Solidity.

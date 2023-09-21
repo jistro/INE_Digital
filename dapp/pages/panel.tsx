@@ -34,12 +34,18 @@ const handleError = (error: any) => {
             alert(`El empleado ya está dado de baja`);
         } else if (error.message.includes("InstitutoNacionalElectoral__EmpleadoDadoDeAlta()")) {
             alert(`El empleado ya está dado de alta`);
+            //InstitutoNacionalElectoral__CredencialDigital__IdNoexiste
+        } else if (error.message.includes("InstitutoNacionalElectoral__CredencialDigital__IdNoexiste()")) {
+            alert(`La credencial no existe`);
+        }else if (error.message.includes("InstitutoNacionalElectoral__CredencialDigital__FaltaDireccion()")){
+            alert(`La credencial no tiene direccion asignada`);
         } else {
             alert("Ocurrió un error en el contrato");
         }
     } else {
         alert("Ocurrió un error al interactuar con el contrato.");
     }
+    console.log(error);
     console.error("Error:", error);
 };
 
@@ -341,7 +347,27 @@ const Home: NextPage = () => {
         }).catch(handleError);
     };
 
-
+    const setVigenciaCredencial = () => {
+        const inputId = "renewCredencial_id";
+        const input = document.getElementById(inputId) as HTMLInputElement;
+        const value = input.value;
+        input.value = "";
+        if (value === "") {
+            alert("Ingresa el numero de credencial");
+            return;
+        }
+        const idmexd = parseInt(value);
+        prepareWriteContract({
+            address: direccionPrincipal,
+            abi: InstitutoNacionalElectoral.abi,
+            functionName: 'renovarVigencia',
+            args: [idmexd],
+        }).then((data) => {
+            writeContract(data).then((data) => {
+                setTxHashes([23, data.hash, idmexd]);
+            }).catch(handleTxError);
+        }).catch(handleError);
+    };
 
     return (
         <div className={styles.container}>
@@ -513,6 +539,17 @@ const Home: NextPage = () => {
                                             <input type="number" id="setAddressCredencial_seccion" placeholder="Seccion" />
                                             <button className={styles.button__confirmAction} onClick={setAddressCredencial}>Crear</button>
                                         </div>
+                                    )}
+                                </div>
+                                <div className={styles.container__leftSide}>
+                                    { txHashes.length > 0 && txHashes[0] === 23 ? (
+                                        <SuccessMessage message={`Credencial actualizada con exito`} txHash={txHashes[1]} clearTxHashes={() => setTxHashes([])} />
+                                    ) : (
+                                        <>
+                                            <h2>Renovar vigencia</h2>
+                                            <input type="number" id="renewCredencial_id" placeholder="Numero de credencial" />
+                                            <button className={styles.button__confirmAction} onClick={setVigenciaCredencial}>Crear</button>
+                                        </>
                                     )}
                                 </div>
                             </>

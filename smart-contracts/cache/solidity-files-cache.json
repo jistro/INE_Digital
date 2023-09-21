@@ -1534,8 +1534,8 @@
       }
     },
     "src/CredencialDigital.sol": {
-      "lastModificationDate": 1694795584546,
-      "contentHash": "4d0d49e08c8434183258d09224057d9c",
+      "lastModificationDate": 1695267803837,
+      "contentHash": "b4e3cfed6f1df698a72965a46b5efd8f",
       "sourceName": "src/CredencialDigital.sol",
       "solcConfig": {
         "settings": {
@@ -1590,8 +1590,8 @@
       }
     },
     "src/InstitutoNacionalElectoral.sol": {
-      "lastModificationDate": 1694795505897,
-      "contentHash": "70fca1c29b5e4007ba1f56c9a9cccf66",
+      "lastModificationDate": 1695268414965,
+      "contentHash": "6baa0b37f9a8e364d2a32e41a2562bfd",
       "sourceName": "src/InstitutoNacionalElectoral.sol",
       "solcConfig": {
         "settings": {
@@ -1648,8 +1648,8 @@
       }
     },
     "src/SistemaPermisos.sol": {
-      "lastModificationDate": 1694795975904,
-      "contentHash": "815b54050cf35ad7d631ce0534b43c78",
+      "lastModificationDate": 1694801101452,
+      "contentHash": "907f8855725b7ba65f278eab6d2ac78b",
       "sourceName": "src/SistemaPermisos.sol",
       "solcConfig": {
         "settings": {

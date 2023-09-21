@@ -39,6 +39,6 @@ El proyecto consiste en un acercamiento a la tecnología blockchain y su aplicac
 
 📁 **smart-Contracts**: En esta carpeta se encuentra el código fuente de los contratos inteligentes utilizados para la creación, actualización y gestión de las credenciales de elector digitales el cual se uso el framework de Foundry.
 
-## Literatura en que se baso
-Cameron, K. (2006). The laws of identity. [https://www.identityblog.com/stories/2005/05/13/TheLawsOfIdentity.pdf](https://www.identityblog.com/stories/2005/05/13/TheLawsOfIdentity.pdf)
-Liu, Y., He, D., Obaidat, M. S., Kumar, N., Khan, M. K., & Raymond Choo, K.-K. (2020). Blockchain-based identity management systems: A review. Journal of Network and Computer Applications, 166, 102731. [https://doi.org/10.1016/j.jnca.2020.102731](https://doi.org/10.1016/j.jnca.2020.102731)
+## Literatura en que se baso el proyecto
+- Cameron, K. (2006). The laws of identity. [https://www.identityblog.com/stories/2005/05/13/TheLawsOfIdentity.pdf](https://www.identityblog.com/stories/2005/05/13/TheLawsOfIdentity.pdf)
+- Liu, Y., He, D., Obaidat, M. S., Kumar, N., Khan, M. K., & Raymond Choo, K.-K. (2020). Blockchain-based identity management systems: A review. Journal of Network and Computer Applications, 166, 102731. [https://doi.org/10.1016/j.jnca.2020.102731](https://doi.org/10.1016/j.jnca.2020.102731)

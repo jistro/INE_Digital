@@ -45,22 +45,22 @@ A continuación, se describen los pasos para instalar y configurar este sistema 
 ### Requisitos previos:
 - Asegúrate de tener Foundry, Node.js y npm instalados en tu sistema. Puedes descargarlos desde el sitio web oficial de [Node.js](https://nodejs.org/es) y [Foundry](https://book.getfoundry.sh/getting-started/installation)
 
-1. Pasos para la instalación:
+### Pasos para la instalación:
 
-Clonar el repositorio:
+#### Clonar el repositorio:
 
 Abre una terminal y ejecuta el siguiente comando para clonar este repositorio en tu máquina local:
 
 ```shell
 git clone https://github.com/jistro/INE_Digital
 ```
-2. Navegar al directorio del proyecto:
+#### Navegar al directorio del proyecto:
 
 Usando tres consolas, ingresa al directorio del proyecto utilizando el siguiente comando:
 ```shell
 cd INE_Digital
 ```
-3. Preparacion para smart contracts
+#### Preparacion para smart contracts
 
 La primera consola estara a cargo de la blockchain local usando foundry mediante el siguiente comando:
 ```shell
@@ -79,7 +79,8 @@ alli para levantar los contratos de manera local entramos el siguente comando:
 make deployTest
 ```
 
-4. Preparacion de aplicacion (Dapp)
+#### Preparacion de aplicacion (Dapp)
+
 El la ultima consola nos movemos a la carpeta de la web app mediante:
 ```shell
 cd dapp
@@ -92,8 +93,10 @@ Ejecutamos de manera local la web app con el siguente comando:
 ```shell
 make local
 ```
+
 ¡Listo! Ahora tienes el sistema instalado y en funcionamiento en tu entorno local utilizando npm y Foundry.
 
 ## Literatura en que se baso el proyecto
+
 - Cameron, K. (2006). The laws of identity. [https://www.identityblog.com/stories/2005/05/13/TheLawsOfIdentity.pdf](https://www.identityblog.com/stories/2005/05/13/TheLawsOfIdentity.pdf)
 - Liu, Y., He, D., Obaidat, M. S., Kumar, N., Khan, M. K., & Raymond Choo, K.-K. (2020). Blockchain-based identity management systems: A review. Journal of Network and Computer Applications, 166, 102731. [https://doi.org/10.1016/j.jnca.2020.102731](https://doi.org/10.1016/j.jnca.2020.102731)
